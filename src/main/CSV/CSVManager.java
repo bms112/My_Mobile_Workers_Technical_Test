@@ -3,6 +3,8 @@ package CSV;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CSVManager {
 
@@ -20,19 +22,22 @@ public class CSVManager {
         return csvManager;
     }
 
-    public void readCSVFile() {
+    public List<String> readCSVFile() {
         String line;
         String splitChar = ",";
+        List<String> lines = new ArrayList<>();
         try(BufferedReader br = new BufferedReader(new FileReader(path))) {
             line = br.readLine();
             if(checkColumnNames(line)) {
                 while ((line = br.readLine()) != null) {
+                    lines.add(line);
                     System.out.println(line);
                 }
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        return lines;
     }
 
     private boolean checkColumnNames(String line) {
