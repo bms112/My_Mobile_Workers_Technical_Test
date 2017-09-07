@@ -31,8 +31,6 @@ public class GUIManager extends JFrame implements ActionListener {
     private void init() {
         setDefaultLookAndFeelDecorated(true);
         setTitle("Job Import Java Utility");
-        //setSize(1000, 500);
-        //setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
@@ -110,11 +108,12 @@ public class GUIManager extends JFrame implements ActionListener {
                     mySqlDBField.getText(), mySqlTableField.getText(), mySqlUserField.getText(), mySqlPassField.getText());
             if (result) {
                 //If the import was ran without any exceptions
-                JOptionPane.showMessageDialog(this, "CSV File Successfully imported into the database",
+                JOptionPane.showMessageDialog(this, "CSV File Successfully imported into the database!",
                         "Import Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 //If an exception occurred
-                JOptionPane.showMessageDialog(this, "CSV File Failed to import into the database",
+                JOptionPane.showMessageDialog(this, "CSV File Failed to import into the database." +
+                                "Please see the log file for more information.",
                         "Import Failed", JOptionPane.ERROR_MESSAGE);
             }
         }

@@ -1,10 +1,13 @@
 package MySQL;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MySQLManager {
 
     private static MySQLManager mySQLManager;
+    private static Logger logger = Logger.getLogger("ImportLog");
 
     private MySQLManager() {
 
@@ -23,6 +26,7 @@ public class MySQLManager {
     //It calls the other private methods within this class to accomplish each step
     public boolean importCSVFileToDatabase(String pathToCSV, String portNo, String database, String table,
                                               String username, String password) {
+        logger.info("Import Process Began");
         //First create the database if it doesn't already exist
         boolean result = createJobDatabase(portNo, database, username, password);
         if(!result) {
@@ -87,7 +91,7 @@ public class MySQLManager {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Exception was thrown whilst executing a query", e);
             return false;
         }
         return true;
@@ -109,7 +113,7 @@ public class MySQLManager {
             stmt.execute(loadQuery);
             con.close();
         } catch(Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Exception was thrown whilst importing the CSV into the database", e);
             return false;
         }
         return true;
