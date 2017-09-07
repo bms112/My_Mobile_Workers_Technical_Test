@@ -31,7 +31,6 @@ public class CSVManager {
             if(checkColumnNames(line)) {
                 while ((line = br.readLine()) != null) {
                     lines.add(line);
-                    System.out.println(line);
                 }
             }
         } catch (IOException ex) {
