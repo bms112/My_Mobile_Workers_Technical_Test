@@ -67,6 +67,8 @@ public class GUIManager extends JFrame implements ActionListener {
         pack();
     }
 
+    //To reduce duplicate code in init() the setFieldSize method has been Overloaded to deal with the sizes of most of
+    //the Components within the GUI
     private void setFieldSize(JLabel labelField) {
         labelField.setAlignmentX(Component.LEFT_ALIGNMENT);
         labelField.setSize(500, 25);
@@ -83,24 +85,35 @@ public class GUIManager extends JFrame implements ActionListener {
         textField.setMaximumSize(textField.getPreferredSize());
     }
 
+    //This method is required, as this class implements ActionListener
+    //This method is called whenever a button assigned this actionlistener is clicked, therefore it is important
+    //to use e.getSource() to determine which button was clicked before deciding what code to run
     @Override
     public void actionPerformed(ActionEvent e) {
+        //if the Browse button was clicked
         if(e.getSource() == csvPathButton) {
+            //Open up the File Chooser
             JFileChooser fc = new JFileChooser();
             int option = fc.showDialog(this, "Open");
+            //If the Open button is clicked retrieve the path and set it to the csvPathField
+            //If the Cancel button is clicked, the File Chooser will close
             if (option == JFileChooser.APPROVE_OPTION) {
                 String path = fc.getSelectedFile().getPath();
                 path = path.replaceAll("\\\\", "/");
                 csvPathField.setText(path);
             }
         } else {
+            //If the Import button was clicked get the MySQLManager and run the import method with all of the data
+            //the user has input into the GUI
             MySQLManager mySQLManager = MySQLManager.getInstance();
             boolean result = mySQLManager.importCSVFileToDatabase(csvPathField.getText(), mySqlPortField.getText(),
                     mySqlDBField.getText(), mySqlTableField.getText(), mySqlUserField.getText(), mySqlPassField.getText());
             if (result) {
+                //If the import was ran without any exceptions
                 JOptionPane.showMessageDialog(this, "CSV File Successfully imported into the database",
                         "Import Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                //If an exception occurred
                 JOptionPane.showMessageDialog(this, "CSV File Failed to import into the database",
                         "Import Failed", JOptionPane.ERROR_MESSAGE);
             }

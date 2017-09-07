@@ -10,6 +10,8 @@ public class MySQLManager {
 
     }
 
+    //Singleton class getInstance method ensures only one instance of this class is ever initialised and used within the
+    //program
     public static MySQLManager getInstance() {
         if(mySQLManager == null) {
             mySQLManager = new MySQLManager();
@@ -17,13 +19,19 @@ public class MySQLManager {
         return mySQLManager;
     }
 
+    //This public method is used by other classes to import the CSV File to the specified database
+    //It calls the other private methods within this class to accomplish each step
     public boolean importCSVFileToDatabase(String pathToCSV, String portNo, String database, String table,
                                               String username, String password) {
+        //First create the database if it doesn't already exist
         boolean result = createJobDatabase(portNo, database, username, password);
         if(!result) {
+            //If an exception occurs return
             return false;
         }
+        //Next create the table within the database if it doesn't already exist
         result = createJobTable(portNo, database, table, username, password);
+        //Finally if no exceptions have occurred attempt to import the CSV File into the table within the database
         return result && importCSVFileToKnownDatabase(pathToCSV, portNo, database, table, username, password);
     }
 
