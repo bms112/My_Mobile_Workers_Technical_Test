@@ -9,10 +9,9 @@ import java.util.List;
 public class CSVManager {
 
     private static CSVManager csvManager;
-    private String path;
 
     private CSVManager() {
-        path = "C:\\Users\\Ben\\IdeaProjects\\My_Mobile_Workers_Technical_Test\\src\\resources\\jobdata.csv";
+
     }
 
     public static CSVManager getInstance() {
@@ -22,24 +21,17 @@ public class CSVManager {
         return csvManager;
     }
 
-    public List<String> readCSVFile() {
+    public List<String> readCSVFile(String path) {
         String line;
-        String splitChar = ",";
         List<String> lines = new ArrayList<>();
         try(BufferedReader br = new BufferedReader(new FileReader(path))) {
-            line = br.readLine();
-            if(checkColumnNames(line)) {
-                while ((line = br.readLine()) != null) {
-                    lines.add(line);
-                }
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
         return lines;
-    }
-
-    private boolean checkColumnNames(String line) {
-        return true;
     }
 }
