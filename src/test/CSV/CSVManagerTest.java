@@ -11,9 +11,9 @@ public class CSVManagerTest {
     }
 
     @Test
-    public void readCSVFile() throws Exception {
+    public void validateCSVFile() throws Exception {
         CSVManager csvManager = CSVManager.getInstance();
-        csvManager.readCSVFile("");
+        csvManager.validateCSVFile("");
     }
 
 }

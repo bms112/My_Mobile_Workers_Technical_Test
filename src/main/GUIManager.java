@@ -1,3 +1,4 @@
+import CSV.CSVManager;
 import MySQL.MySQLManager;
 
 import javax.swing.*;
@@ -103,18 +104,25 @@ public class GUIManager extends JFrame implements ActionListener {
         } else {
             //If the Import button was clicked get the MySQLManager and run the import method with all of the data
             //the user has input into the GUI
-            MySQLManager mySQLManager = MySQLManager.getInstance();
-            boolean result = mySQLManager.importCSVFileToDatabase(csvPathField.getText(), mySqlPortField.getText(),
-                    mySqlDBField.getText(), mySqlTableField.getText(), mySqlUserField.getText(), mySqlPassField.getText());
-            if (result) {
-                //If the import was ran without any exceptions
-                JOptionPane.showMessageDialog(this, "CSV File Successfully imported into the database!",
-                        "Import Success", JOptionPane.INFORMATION_MESSAGE);
+            CSVManager csvManager = CSVManager.getInstance();
+            if(csvManager.validateCSVFile(csvPathField.getText())) {
+                MySQLManager mySQLManager = MySQLManager.getInstance();
+                boolean result = mySQLManager.importCSVFileToDatabase(csvPathField.getText(), mySqlPortField.getText(),
+                        mySqlDBField.getText(), mySqlTableField.getText(), mySqlUserField.getText(), mySqlPassField.getText());
+                if (result) {
+                    //If the import was ran without any exceptions
+                    JOptionPane.showMessageDialog(this, "CSV File Successfully imported into the database!",
+                            "Import Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    //If an exception occurred
+                    JOptionPane.showMessageDialog(this, "CSV File Failed to import into the database." +
+                                    "Please see the log file for more information.",
+                            "Import Failed", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                //If an exception occurred
-                JOptionPane.showMessageDialog(this, "CSV File Failed to import into the database." +
-                                "Please see the log file for more information.",
-                        "Import Failed", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "CSV File Path is invalid. Please enter a valid" +
+                                "path to a CSV File that contains the required 31 columns.",
+                        "CSV File Not Found or Invalid", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
