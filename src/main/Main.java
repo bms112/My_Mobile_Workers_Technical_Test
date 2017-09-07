@@ -10,18 +10,16 @@ public class Main {
         Logger logger = Logger.getLogger("ImportLog");
         FileHandler fh;
         try {
-            File logFile = new File("log.txt");
+            new File("log.txt");
             fh = new FileHandler("log.txt");
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
-
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         logger.info("PROGRAM STARTED");
         //Start the GUI
         new GUIManager();

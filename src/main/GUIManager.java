@@ -2,7 +2,6 @@ import CSV.CSVManager;
 import MySQL.MySQLManager;
 
 import javax.swing.*;
-import javax.swing.plaf.FileChooserUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -115,7 +114,7 @@ public class GUIManager extends JFrame implements ActionListener {
                             "Import Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     //If an exception occurred
-                    JOptionPane.showMessageDialog(this, "CSV File Failed to import into the database." +
+                    JOptionPane.showMessageDialog(this, "CSV File Failed to import into the database. " +
                                     "Please see the log file for more information.",
                             "Import Failed", JOptionPane.ERROR_MESSAGE);
                 }

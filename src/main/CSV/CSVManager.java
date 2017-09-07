@@ -5,10 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CSVManager {
 
     private static CSVManager csvManager;
+    private static Logger logger = Logger.getLogger("ImportLog");
     private final static int CSV_COLUMN_NO = 31;
     private final static String CSV_SPLIT_CHAR = ",";
 
@@ -31,10 +34,14 @@ public class CSVManager {
         if(!path.endsWith(".csv")) {
             return false;
         }
+        int count = 2;
         for(String line : readCSVFile(path)) {
             if(line.split(CSV_SPLIT_CHAR).length != CSV_COLUMN_NO) {
+                logger.log(Level.SEVERE, "Validation of CSV File failed at line " + count + "due to invalid " +
+                        "number of columns", line);
                 return false;
             }
+            count++;
         }
         return true;
     }
@@ -49,7 +56,7 @@ public class CSVManager {
                 lines.add(line);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.log(Level.SEVERE, "Exception was thrown whilst reading the CSV File", ex);
         }
         return lines;
     }
