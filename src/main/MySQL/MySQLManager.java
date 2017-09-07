@@ -31,14 +31,7 @@ public class MySQLManager {
         String url = "jdbc:mysql://localhost:" + portNo + "/?useSSL=false";
         String sql = "CREATE DATABASE IF NOT EXISTS " + database;
 
-        try (Connection conn = DriverManager.getConnection(url, username, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return executeQuery(sql, url, username, password);
     }
 
     private boolean createJobTable(String portNo, String database, String table, String username, String password) {
@@ -78,6 +71,10 @@ public class MySQLManager {
                 "  `Barcode` varchar(255) DEFAULT NULL,\n" +
                 "   PRIMARY KEY(PK)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
+        return executeQuery(sql, url, username, password);
+    }
+
+    private boolean executeQuery(String sql, String url, String username, String password) {
         try (Connection conn = DriverManager.getConnection(url, username, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.execute();
