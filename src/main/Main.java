@@ -13,8 +13,8 @@ public class Main {
         try {
             //This ensures that the log file is cleared from the last run and assigns the file to the logger via a
             //FileHandler
-            new File("log.txt");
-            fh = new FileHandler("log.txt");
+            new File("MySQL CSV Import Export Log.txt");
+            fh = new FileHandler("MySQL CSV Import Export Log.txt");
             logger.addHandler(fh);
             fh.setFormatter(new SimpleFormatter());
         } catch (SecurityException e) {

@@ -5,26 +5,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 public class GUIManager extends JFrame implements ActionListener {
+    private static Logger logger = Logger.getLogger("ImportLog");
 
     private JLabel mySqlLabel = new JLabel("MySQL Parameters");
     private JLabel mySqlPortLabel = new JLabel("MySQL Port Number");
-    private JTextField mySqlPortField = new JTextField("8080");
+    private JTextField mySqlPortField = new JTextField();
 
     private JLabel mySqlDBLabel = new JLabel("MySQL Database Name");
-    private JTextField mySqlDBField = new JTextField("jobsdb");
+    private JTextField mySqlDBField = new JTextField();
     private JLabel mySqlTableLabel = new JLabel("MySQL Table Name");
-    private JTextField mySqlTableField = new JTextField("jobs");
+    private JTextField mySqlTableField = new JTextField();
     private JLabel mySqlUserLabel = new JLabel("MySQL Username");
-    private JTextField mySqlUserField = new JTextField("root");
+    private JTextField mySqlUserField = new JTextField();
     private JLabel mySqlPassLabel = new JLabel("MySQL Password");
-    private JPasswordField mySqlPassField = new JPasswordField("G0ldf1sh");
+    private JPasswordField mySqlPassField = new JPasswordField();
 
     private JLabel importLabel = new JLabel("Import Function");
 
     private JLabel csvPathLabel = new JLabel("Path to CSV File");
-    private JTextField csvPathField = new JTextField("C:/Users/Ben/IdeaProjects/My_Mobile_Workers_Technical_Test/src/resources/jobdata.csv");
+    private JTextField csvPathField = new JTextField();
     private JButton csvPathButton = new JButton("Browse...");
 
     private JLabel csvIsJobDataLabel = new JLabel("Is Selected CSV File jobdata.csv?");
@@ -34,7 +36,7 @@ public class GUIManager extends JFrame implements ActionListener {
     private JLabel exportLabel = new JLabel("Export Function");
 
     private JLabel exportFileNameLabel = new JLabel("Export File Name (.csv)");
-    private JTextField exportFileNameField = new JTextField("Export");
+    private JTextField exportFileNameField = new JTextField();
     private JButton exportButton = new JButton("Export");
 
     GUIManager() {
@@ -55,38 +57,40 @@ public class GUIManager extends JFrame implements ActionListener {
         panel.add(mySqlLabel);
         panel.add(mySqlPortLabel);
         panel.add(mySqlPortField);
-        setFieldSize(mySqlPortField);
         panel.add(mySqlDBLabel);
         panel.add(mySqlDBField);
-        setFieldSize(mySqlDBField);
         panel.add(mySqlTableLabel);
         panel.add(mySqlTableField);
-        setFieldSize(mySqlTableField);
         panel.add(mySqlUserLabel);
         panel.add(mySqlUserField);
-        setFieldSize(mySqlUserField);
         panel.add(mySqlPassLabel);
         panel.add(mySqlPassField);
-        setFieldSize(mySqlPassField);
         panel.add(new JSeparator(JSeparator.HORIZONTAL));
         setHeading(importLabel);
         panel.add(importLabel);
-        setFieldSize(csvPathLabel);
         panel.add(csvPathLabel);
-        setFieldSize(csvPathField);
         panel.add(csvPathField);
         panel.add(csvPathButton);
         panel.add(csvIsJobDataLabel);
-        csvIsJobData.setSelected(true);
         panel.add(csvIsJobData);
         panel.add(importButton);
         panel.add(new JSeparator(JSeparator.HORIZONTAL));
         setHeading(exportLabel);
         panel.add(exportLabel);
         panel.add(exportFileNameLabel);
-        setFieldSize(exportFileNameField);
         panel.add(exportFileNameField);
         panel.add(exportButton);
+
+        setFieldSize(mySqlDBField);
+        setFieldSize(mySqlPortField);
+        setFieldSize(mySqlTableField);
+        setFieldSize(mySqlUserField);
+        setFieldSize(mySqlPassField);
+        setFieldSize(csvPathLabel);
+        setFieldSize(csvPathField);
+        setFieldSize(exportFileNameField);
+
+        csvIsJobData.setSelected(true);
         csvPathButton.addActionListener(this);
         importButton.addActionListener(this);
         exportButton.addActionListener(this);
@@ -144,6 +148,7 @@ public class GUIManager extends JFrame implements ActionListener {
                         mySqlDBField.getText(), mySqlTableField.getText(), mySqlUserField.getText(), mySqlPassField.getText(),
                         headers, csvIsJobData.isSelected());
                 if (result) {
+                    logger.info("Import Process Ended Successfully");
                     //If the import was ran without any exceptions
                     JOptionPane.showMessageDialog(this, "CSV File Successfully imported into the database!",
                             "Import Success", JOptionPane.INFORMATION_MESSAGE);
@@ -154,21 +159,26 @@ public class GUIManager extends JFrame implements ActionListener {
                             "Import Failed", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
+                //If the CSV file validation failed
                 JOptionPane.showMessageDialog(this, "CSV File Path is invalid.\nPlease enter a valid" +
                                 "path to a CSV File that contains valid data",
                         "CSV File Path Invalid", JOptionPane.ERROR_MESSAGE);
             }
         } else {
+            //If the Export button was clicked get the MySQLManager and run the export method with all of the data
+            //the user has input into the GUI
             MySQLManager mySQLManager = MySQLManager.getInstance();
             String filename = exportFileNameField.getText() + ".csv";
             boolean result = mySQLManager.exportTableToCSVFile(filename, mySqlPortField.getText(), mySqlDBField.getText(),
                     mySqlTableField.getText(), mySqlUserField.getText(), mySqlPassField.getText());
             if(result) {
-                //If the import was ran without any exceptions
+                logger.info("Export Process Ended Successfully");
+                //If the export was ran without any exceptions
                 JOptionPane.showMessageDialog(this, "Database Table Successfully exported" +
                                 " into the CSV File!",
                         "Export Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                //If an exception occurred
                 JOptionPane.showMessageDialog(this, "Database Table failed to Export into CSV File.\n" +
                                 "Please see the log file for more information.",
                         "Export Failed", JOptionPane.ERROR_MESSAGE);

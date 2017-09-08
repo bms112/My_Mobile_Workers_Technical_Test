@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class MySQLManagerTest {
+
     @Test
     public void getInstance() throws Exception {
         MySQLManager.getInstance();
@@ -21,6 +22,21 @@ public class MySQLManagerTest {
         String[] headers = new String[0];
         MySQLManager mySQLManager = MySQLManager.getInstance();
         boolean result = mySQLManager.importCSVFileToDatabase(pathCSV, portNo, database, table, username, password, headers, true);
+        if(result) {
+            throw new Exception();
+        }
+    }
+
+    @Test
+    public void exportTableToCSVFile() throws Exception {
+        String filename = "";
+        String portNo = "";
+        String database = "";
+        String table = "";
+        String username = "";
+        String password = "";
+        MySQLManager mySQLManager = MySQLManager.getInstance();
+        boolean result = mySQLManager.exportTableToCSVFile(filename, portNo, database, table, username, password);
         if(result) {
             throw new Exception();
         }
