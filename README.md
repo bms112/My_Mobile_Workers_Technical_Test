@@ -24,8 +24,8 @@ Simply double-clicking the My_Mobile_Workers_Technical_Test.jar file will start 
 
 Example GUI input for given task:
 - MySQL Port Number - 3306
-- MySQL Database Name - jobsdb
-- MySQL Table Name - jobs
+- MySQL Database Name - jobsdb (If this Database doesn't exist it will be created)
+- MySQL Table Name - jobs (If this Table doesn't exist it will be created)
 - MySQL Username - root
 - MySQL Password - root
 - Path to CSV File - C:/Users/Ben/IdeaProjects/My_Mobile_Workers_Technical_Test/src/resources/jobdata.csv
